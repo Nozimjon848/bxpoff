@@ -8,7 +8,8 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.exceptions import TelegramBadRequest
-
+import threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
 # ======= SOZLAMALAR (SETTINGS) =======
 BOT_TOKEN = "8411534123:AAEoPekkapXGDg6IxV3VsGtv_o0EML4yLPw" # @BotFather dan olingan token
 ADMIN_IDS = [8023335798, 8066401832] # Adminlarning Telegram ID larini shu yerga yozing
@@ -689,3 +690,17 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
+
+class Handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"Bot ishlayapti")
+
+def run_web():
+    port = 10000
+    server = HTTPServer(("0.0.0.0", port), Handler)
+    server.serve_forever()
+
+threading.Thread(target=run_web).start()
