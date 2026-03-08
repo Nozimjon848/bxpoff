@@ -1,4 +1,4 @@
 aiogram==3.7.0
-aiohttp
+aiohttp==3.9.5
 pydantic==2.6.4
-python-dotenv
+python-dotenv==1.0.1
