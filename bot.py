@@ -10,6 +10,8 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.exceptions import TelegramBadRequest
 import threading
 from http.server import HTTPServer, BaseHTTPRequestHandler
+import nest_asyncio
+nest_asyncio.apply()
 # ======= SOZLAMALAR (SETTINGS) =======
 BOT_TOKEN = "8411534123:AAEoPekkapXGDg6IxV3VsGtv_o0EML4yLPw" # @BotFather dan olingan token
 ADMIN_IDS = [8023335798, 8066401832] # Adminlarning Telegram ID larini shu yerga yozing
@@ -19,7 +21,11 @@ LOG_CHANNEL_ID = -1003782480352 # Yangi foydalanuvchilar haqida xabar boradigan 
 import aiosqlite
 
 DB_NAME = "stars_bot.db"
-
+def run_web():
+    port = int(os.environ.get("PORT", 8080))  # hosting port yoki default 8080
+    server = HTTPServer(("0.0.0.0", port), Handler)
+    print(f"🌐 Web server port {port} da ishlayapti")
+    server.serve_forever()
 async def init_db():
     async with aiosqlite.connect(DB_NAME) as db:
         await db.execute('''
@@ -704,3 +710,4 @@ def run_web():
     server.serve_forever()
 
 threading.Thread(target=run_web).start()
+
